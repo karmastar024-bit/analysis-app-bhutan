@@ -1,0 +1,43 @@
+/* Shared header geometry; Tibetan stacks need taller line boxes than Latin text. */
+.stApp .st-key-school_header {
+    height: auto;
+    padding-top: 5rem !important;
+    padding-bottom: 2rem !important;
+}
+.st-key-school_header .ia-heading-group {
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
+    min-width: 0;
+    padding-block: .35rem;
+}
+.st-key-school_header .ia-heading-group .ia-title {
+    font: 500 clamp(2rem, 4vw, 3.6rem)/1.25 Georgia, "IA Tibetan", "Result Tibetan", serif !important;
+    margin: 0 !important;
+    max-width: none;
+    letter-spacing: -.025em;
+    overflow-wrap: anywhere;
+}
+.st-key-school_header .ia-heading-group .ia-sub {
+    display: block !important;
+    margin: 0 !important;
+    max-width: none;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #f4ddba;
+}
+.st-key-school_header .ia-heading-group[lang="dz"] {gap: .75rem;}
+.st-key-school_header .ia-heading-group[lang="dz"] .ia-title {
+    font-family: "IA Tibetan", "Result Tibetan", "Noto Serif Tibetan", serif !important;
+    font-size: clamp(1.65rem, 3vw, 2.65rem) !important;
+    line-height: 1.95 !important;
+    letter-spacing: normal !important;
+}
+.st-key-school_header .ia-heading-group[lang="dz"] .ia-sub {
+    font-family: "IA Tibetan", "Result Tibetan", "Noto Serif Tibetan", serif;
+    font-size: 1.1rem;
+    line-height: 1.95 !important;
+}
+@media (max-width: 640px) {
+    .stApp .st-key-school_header {padding-inline: 1.25rem !important;}
+}
