@@ -1,3 +1,4 @@
+from html import escape
 from base64 import b64encode
 from functools import lru_cache
 from pathlib import Path
@@ -33,6 +34,7 @@ def _select_language(code):
 def header(portal=False):
     st.html(ASSETS / "theme.css")
     st.html(tibetan_font_style())
+    st.html(ASSETS / "header.css")
     script = (ASSETS / "native_locale.js").read_text().replace("__LANGUAGE__", json.dumps(current_lang()))
     st.html("<script>" + script + "</script>", unsafe_allow_javascript=True)
     
@@ -57,5 +59,15 @@ def header(portal=False):
                 for k in MENU_KEYS:
                     if k != "home" and k in PAGES:
                         st.page_link(PAGES[k], label=t(k))
-        st.markdown(f'<p class="ia-title">{t("Assessment workspace") if portal else t("app_title")}</p><p class="ia-sub">{t("subtitle")}</p>',
-                    unsafe_allow_html=True)
+        header_text(t("Assessment workspace") if portal else t("app_title"), t("subtitle"))
+
+
+def header_text(title, subtitle):
+    """Use the same title/subtitle order and language-aware layout in both tools."""
+    lang = "dz" if current_lang() == "dz" else "en"
+    st.markdown(
+        f'<div class="ia-heading-group" lang="{lang}">'
+        f'<p class="ia-title" lang="{lang}">{escape(title)}</p>'
+        f'<p class="ia-sub">{escape(subtitle)}</p></div>',
+        unsafe_allow_html=True,
+    )
