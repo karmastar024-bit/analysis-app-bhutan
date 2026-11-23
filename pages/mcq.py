@@ -1,0 +1,89 @@
+import math
+from dataclasses import asdict, is_dataclass
+from enum import Enum
+
+import pandas as pd
+import streamlit as st
+
+from components.item_results import show_results
+from components.mcq_upload import render_upload
+from report_extras import compute_score_distribution, create_section_pdf, distractor_groups
+
+
+def sanitize(data):
+    """
+    Convert dataclasses and Enum values into JSON/Streamlit-safe
+    Python objects.
+
+    Also handles NaN and Infinity.
+    """
+
+    # IMPORTANT:
+    # This fixes the previous:
+    # NameError: name 'Enum' is not defined
+    if isinstance(data, Enum):
+        return data.value
+
+    if is_dataclass(data):
+
+        return sanitize(
+            asdict(data)
+        )
+
+    if isinstance(data, dict):
+
+        return {
+            key: sanitize(value)
+            for key, value in data.items()
+        }
+
+    if isinstance(data, list):
+
+        return [
+            sanitize(item)
+            for item in data
+        ]
+
+    if isinstance(data, tuple):
+
+        return [
+            sanitize(item)
+            for item in data
+        ]
+
+    if isinstance(data, float):
+
+        if math.isnan(data) or math.isinf(data):
+
+            return 0.0
+
+    return data
+
+
+render_upload(sanitize)
+if "analysis_results" in st.session_state:
+    results = st.session_state["analysis_results"]
+    summary = results["summary"]
+    metrics = [("Students", summary["total_students"]), ("Items", summary["total_questions"]),
+               ("Mean MCQ score", f"{summary['mean_score']:.2f} / {summary['total_questions']}"),
+               ("Standard deviation", f"{summary['std_score']:.2f}"),
+               ("Minimum score", summary["min_score"]), ("Maximum score", summary["max_score"])]
+    rows = [{"Question": item["question"], "Difficulty": item["difficulty"],
+             "Difficulty status": item["difficulty_status"], "Discrimination": item["discrimination"],
+             "Discrimination status": item["discrimination_status"],
+             "Distractor efficiency": f"{item['distractor_efficiency']:.0f}%",
+             "Recommendation": item["recommendation"].upper(), "Why": item["decision_reason"]}
+            for item in results["items"]]
+    bins = compute_score_distribution(results)["bins"]
+    score_label = "MCQ score (correct answers)"
+    note = "Students are ranked by their overall test score for the upper and lower 27% groups."
+    frame = pd.DataFrame(rows)
+    option_summaries = []
+    for item in results["items"]:
+        functional, nonfunctional = distractor_groups(item)
+        fd = ", ".join(option["option"] for option in functional) or "—"
+        nfd = ", ".join(option["option"] for option in nonfunctional) or "—"
+        option_summaries.append(f"FD: {fd} · NFD: {nfd}")
+    frame.insert(frame.columns.get_loc("Why"), "Distractors (FD / NFD)", option_summaries)
+    pdf = create_section_pdf("Multiple choice", metrics, bins, frame, note, score_label, mcq_items=results["items"])
+    show_results(metrics, bins, score_label, frame, pdf, "MCQ_item_analysis.pdf", note)
