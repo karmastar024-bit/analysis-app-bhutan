@@ -1,9 +1,10 @@
 """ITEM ANALYZER – entry point / router.
 Each page is either a callable in pages/ or (MCQ) the original script."""
+from pathlib import Path
 import streamlit as st
 from utils.translations import t
 
-st.set_page_config(page_title=t("Assessment workspace"), page_icon="📘", layout="wide",
+st.set_page_config(page_title=t("Assessment workspace"), page_icon=str(Path(__file__).resolve().parent / "assets/assessment-icon.png"), layout="wide",
                    initial_sidebar_state="collapsed")
 
 from components import navigation
