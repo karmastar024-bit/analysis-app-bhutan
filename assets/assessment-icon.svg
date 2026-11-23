@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<title>Bhutan Assessment Workspace — learning in the Himalayas</title>
+<rect width="64" height="64" rx="15" fill="#123541"/>
+<circle cx="43" cy="19" r="9" fill="#efb74f"/>
+<path d="M10 32 27 11 45 32Z" fill="#85cfc4"/>
+<path d="m27 11-7 9 7-3 7 3Z" fill="#fff4dd"/>
+<path d="M8 29Q20 25 32 32Q44 25 56 29V50Q44 46 32 54Q20 46 8 50Z" fill="#fff4dd"/>
+<path d="M8 50Q20 46 32 54Q44 46 56 50" fill="none" stroke="#c65838" stroke-width="4" stroke-linejoin="round"/>
+<path d="M32 33V51" stroke="#123541" stroke-width="2.5"/>
+<path d="m14 36 11 2m-11 5 11 2m14-7 11-2m-11 9 11-2" stroke="#123541" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
