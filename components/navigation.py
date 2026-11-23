@@ -43,7 +43,7 @@ def header(portal=False):
         with st.container(key="classroom_art"):
             st.image(str(artwork / "classroom.jpg"), width="stretch")
         with st.container(key="header_tools", horizontal=True, gap="xsmall", horizontal_alignment="right", vertical_alignment="center"):
-            st.page_link(PAGES["portal" if portal else "home"], label=t("home"), icon=":material/home:", width="content")
+            st.page_link(PAGES["portal"], label=t("home"), icon=":material/home:", width="content")
             with st.popover(t("language"), icon=":material/language:"):
                 for code, name in LANGUAGES.items():
                     active = code == st.session_state.get("lang", "en")
