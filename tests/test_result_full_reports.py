@@ -16,7 +16,7 @@ from result_analysis.core.translations import translate
 
 def navigate(app, page):
     """Use the same menu and Home controls available to teachers."""
-    key = "nav_home" if page == "Home" else "menu_" + page
+    key = "menu_" + page
     app.button(key=key).click().run()
 
 
