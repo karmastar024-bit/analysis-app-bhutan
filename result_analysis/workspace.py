@@ -7,6 +7,7 @@ import streamlit as st
 from result_analysis.core.subjects_config import METHODS
 from result_analysis.core.translations import t, LANGUAGES, set_language
 from result_analysis.views import individual, class_result, sections
+from components.navigation import go
 
 
 def render():
@@ -53,13 +54,8 @@ def render():
             horizontal_alignment="right",
             vertical_alignment="center",
         ):
-            st.button(
-                t("Home"),
-                icon=":material/home:",
-                key="nav_home",
-                on_click=navigate,
-                args=("Home",),
-            )
+            if st.button(t("Home"), icon=":material/home:", key="nav_home"):
+                go("portal")
             with st.popover(t("Language"), icon=":material/language:"):
                 for code, label in LANGUAGES.items():
                     st.button(
@@ -77,6 +73,7 @@ def render():
                 workspace_links()
                 st.divider()
                 for target, label in [
+                    ("Home", "Bhutan Result Analysis Tool"),
                     ("Individual Subject Analysis", "Individual subject"),
                     ("Class Result Analysis", "Class results"),
                     ("Section Comparison", "Section comparison"),
