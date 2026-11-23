@@ -7,7 +7,8 @@ import streamlit as st
 from result_analysis.core.subjects_config import METHODS
 from result_analysis.core.translations import t, LANGUAGES, set_language
 from result_analysis.views import individual, class_result, sections
-from components.navigation import go
+from components.navigation import go, header_text, ASSETS
+from utils.translations import t as shared_t
 
 
 def render():
@@ -29,6 +30,7 @@ def render():
 
     st.html(ROOT / "assets/theme.css")
     st.html(tibetan_style())
+    st.html(ASSETS / "header.css")
     if st.session_state.get('lang') == 'dz':
         st.html("<style>.stApp, .stApp button, .stApp input, .stApp label, .stApp p, .stApp h1, .stApp h2, .stApp h3{font-family:'Source Sans 3','Result Tibetan',sans-serif;line-height:1.9}</style>")
 
@@ -89,12 +91,7 @@ def render():
                         on_click=navigate,
                         args=(target,),
                     )
-        st.markdown(
-            t(f'<p class="ia-eyebrow">{t("Assessment workspace")}</p>'
-            f'<p class="ia-title">{t("Bhutan Result Analysis Tool")}</p>'
-            f'<p class="ia-sub">{t("A clearer picture of learning.")}<br>{t("From your mark sheet to the next lesson.")}</p>'),
-            unsafe_allow_html=True,
-        )
+        header_text(t("Bhutan Result Analysis Tool"), shared_t("subtitle"))
     metadata = {}
     if page == "Home":
         st.header(t("What would you like to understand?"))
